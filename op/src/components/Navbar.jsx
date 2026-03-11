@@ -621,13 +621,16 @@ function Navbar({ isHomePage = false }) {
             </div>
 
             {/* CTA Button - Updated */}
+            
             <div className="flex items-center">
+              <Link to="/contact">
               <button className="hidden md:flex items-center gap-2 bg-gradient-to-r from-[#1E2B3A] to-[#2A4B7C] hover:from-[#2A4B7C] hover:to-[#1E2B3A] text-white font-medium px-5 py-2.5 rounded-full transition-all duration-300 shadow-md hover:shadow-lg group">
                 <span className="w-6 h-6 rounded-full bg-[#B76E79] flex items-center justify-center group-hover:rotate-12 transition-transform">
                   <i className="fas fa-arrow-right text-white text-xs"></i>
                 </span>
                 <span>Get Free Website Audit</span>
-              </button>
+              </button></Link>
+              
 
               {/* Mobile Menu Button */}
               <div className="md:hidden">
@@ -771,12 +774,15 @@ function Navbar({ isHomePage = false }) {
             </div>
 
             {/* Mobile CTA Button - Updated */}
+            <Link to="/contact">
             <button className="w-full mt-6 flex items-center justify-center gap-2 bg-gradient-to-r from-[#1E2B3A] to-[#2A4B7C] hover:from-[#2A4B7C] hover:to-[#1E2B3A] text-white font-medium px-5 py-3 rounded-full transition-all duration-300 shadow-md hover:shadow-lg group">
               <span className="w-6 h-6 rounded-full bg-[#B76E79] flex items-center justify-center group-hover:rotate-12 transition-transform">
                 <i className="fas fa-arrow-right text-white text-xs"></i>
               </span>
               <span>Get Free Website Audit</span>
             </button>
+            </Link>
+            
 
             {/* Copyright */}
             <p className="text-center text-xs text-gray-500 mt-6">

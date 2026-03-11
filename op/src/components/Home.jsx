@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import Navbar from "./Navbar";
 import CircularText from "./CircularText";
 import { Helmet } from 'react-helmet-async';
+import { Link } from "react-router-dom";
 
 function Home() {
   // Refs for text animations only
@@ -214,12 +215,14 @@ function Home() {
               ref={ctaRef}
               className="flex justify-center mb-4 sm:mb-6 opacity-0"
             >
-              <button className="group flex items-center gap-2 sm:gap-3 bg-[#1E2B3A] hover:bg-[#2A4B7C] text-white font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 magnet text-sm sm:text-base">
-                <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:rotate-12 transition-transform">
-                  <i className="fas fa-arrow-right text-white text-xs sm:text-sm"></i>
-                </span>
-                <span>Claim Your Free Strategy</span>
-              </button>
+              <Link to="/contact">
+  <button className="group flex items-center gap-2 sm:gap-3 bg-[#1E2B3A] hover:bg-[#2A4B7C] text-white font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 magnet text-sm sm:text-base">
+    <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:rotate-12 transition-transform">
+      <i className="fas fa-arrow-right text-white text-xs sm:text-sm"></i>
+    </span>
+    <span>Claim Your Free Strategy</span>
+  </button>
+</Link>
             </div>
             
             {/* Trust Indicator - Professional */}

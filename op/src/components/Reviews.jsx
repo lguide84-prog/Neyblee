@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Helmet } from 'react-helmet-async';
@@ -90,23 +90,23 @@ const Reviews = () => {
       }
     });
 
-    // Highlight text animation
+    // Highlight text animation - Fixed
     highlightsRef.current.forEach((highlight, index) => {
       if (highlight) {
+        // First set the initial state
+        gsap.set(highlight, { width: 0 });
+        
         const highlightAnimation = ScrollTrigger.create({
           trigger: highlight,
           start: 'top 85%',
           once: true,
           onEnter: () => {
-            gsap.fromTo(highlight,
-              { width: 0 },
-              {
-                width: '100%',
-                duration: 1.5,
-                delay: index * 0.3 + 0.8,
-                ease: 'power2.inOut'
-              }
-            );
+            gsap.to(highlight, {
+              width: '100%',
+              duration: 1.5,
+              delay: index * 0.2 + 0.5,
+              ease: 'power2.inOut'
+            });
           }
         });
         scrollTriggers.push(highlightAnimation);
@@ -115,12 +115,16 @@ const Reviews = () => {
 
     // Cleanup function
     return () => {
-      scrollTriggers.forEach(trigger => trigger.kill());
+      scrollTriggers.forEach(trigger => {
+        if (trigger && trigger.kill) {
+          trigger.kill();
+        }
+      });
       gsap.killTweensOf([titleRef.current, ...cardsRef.current, ...highlightsRef.current]);
     };
   }, []);
 
-  const handleCardHover = React.useCallback((index, isHovering) => {
+  const handleCardHover = useCallback((index, isHovering) => {
     const card = cardsRef.current[index];
     if (card) {
       gsap.killTweensOf(card);
@@ -131,6 +135,19 @@ const Reviews = () => {
       });
     }
   }, []);
+
+  // Function to assign refs correctly
+  const setCardRef = (el, index) => {
+    if (el) {
+      cardsRef.current[index] = el;
+    }
+  };
+
+  const setHighlightRef = (el, index) => {
+    if (el) {
+      highlightsRef.current[index] = el;
+    }
+  };
 
   // Preload any critical assets
   useEffect(() => {
@@ -147,6 +164,12 @@ const Reviews = () => {
       el.crossOrigin = "anonymous";
       document.head.appendChild(el);
     });
+
+    // Cleanup refs on unmount
+    return () => {
+      cardsRef.current = [];
+      highlightsRef.current = [];
+    };
   }, []);
 
   return (
@@ -251,11 +274,7 @@ const Reviews = () => {
               {testimonials.map((testimonial, index) => (
                 <article
                   key={testimonial.id}
-                  ref={(el) => {
-                    if (el && !cardsRef.current.includes(el)) {
-                      cardsRef.current[index] = el;
-                    }
-                  }}
+                  ref={(el) => setCardRef(el, index)}
                   className="group relative"
                   onMouseEnter={() => handleCardHover(index, true)}
                   onMouseLeave={() => handleCardHover(index, false)}
@@ -294,17 +313,15 @@ const Reviews = () => {
                       </p>
                     </div>
 
-                    {/* Highlight underline */}
-                    <div className="mb-10 overflow-hidden">
-                      <div 
-                        ref={(el) => {
-                          if (el && !highlightsRef.current.includes(el)) {
-                            highlightsRef.current[index] = el;
-                          }
-                        }}
-                        className="h-px bg-gradient-to-r from-transparent via-[#B76E79] to-transparent"
-                        aria-hidden="true"
-                      />
+                    {/* Highlight underline - Fixed */}
+                    <div className="mb-10">
+                      <div className="relative h-px w-full bg-white/10">
+                        <div 
+                          ref={(el) => setHighlightRef(el, index)}
+                          className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#B76E79] to-[#5D4E6D]"
+                          style={{ width: 0 }}
+                        />
+                      </div>
                     </div>
 
                     {/* Client Info */}
